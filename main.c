@@ -37,6 +37,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "stm32l1xx_nucleo.h"
 
 /** @addtogroup STM32L1xx_HAL_Examples
   * @{
@@ -50,6 +51,8 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+static GPIO_InitTypeDef GPIO_InitStruct;
+
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void Error_Handler(void);
@@ -83,10 +86,19 @@ int main(void)
   /* Add your application code here
      */
 
+  LED2_GPIO_CLK_ENABLE();
+
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  GPIO_InitStruct.Pin = LED2_PIN;
+  HAL_GPIO_Init(LED2_GPIO_PORT, &GPIO_InitStruct);
 
   /* Infinite loop */
   while (1)
   {
+      HAL_GPIO_TogglePin(LED2_GPIO_PORT, LED2_PIN);
+      HAL_Delay(1000);
   }
 }
 
